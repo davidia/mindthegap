@@ -31,6 +31,7 @@ public class FeatureBuilder {
 		
 		attributes.add(gap);
 		attributes.add(prevRet);
+		attributes.add(yestLow);
 		attributes.add(index);
 		attributes.add(mktCap);
 		attributes.add(target);
@@ -41,6 +42,14 @@ public class FeatureBuilder {
 		double c1 = dataSource.getDay(symbol, index - 1).close();
 		double c2 = dataSource.getDay(symbol, index - 2).close();		
 		return(c2/c1 - 1);		
+	}
+	
+	private double getPrevLow(String symbol,Day d){
+		int index = dataSource.indexForDate(d);
+		double open = dataSource.getDay(symbol, index).open();
+		double low = dataSource.getDay(symbol, index - 1).low();
+				
+		return(open/low - 1);		
 	}
 	
 	private double getIndexGap(Day d){
@@ -92,6 +101,7 @@ public class FeatureBuilder {
 	
 	Attribute gap = new Attribute("gap");
 	Attribute prevRet = new Attribute("prevRet");
+	Attribute yestLow = new Attribute("yestLow");
 	Attribute index = new Attribute("index");
 	Attribute mktCap = new Attribute("mktCap");
 	Attribute target = new Attribute("target");
@@ -102,22 +112,32 @@ public class FeatureBuilder {
 	public void createFeatures(int itemsPerDay){
 		Map<Day, List<String>> candidates = filterCandidates(itemsPerDay);
 		
-		ExecutorService es = Executors.newFixedThreadPool(6);
+		//ExecutorService es = Executors.newFixedThreadPool(6);
 		System.out.println("Beginning prefetch");
 		for(Day day : candidates.keySet()){
 			for(String symbol : candidates.get(day)){
-				es.submit(new Check(symbol, day));				
+				dataSource.check(symbol, day);
+				//es.submit(new Check(symbol, day));				
 			}
 		}
 		
+//		try {
+//			Thread.sleep(10000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+		
+		
 		System.out.println("Prefetch queued");
-		es.shutdown();
-		try {
-			es.awaitTermination(30, TimeUnit.SECONDS);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+//		es.shutdown();
+//		try {
+//			es.awaitTermination(30, TimeUnit.SECONDS);
+//		} catch (InterruptedException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 		
 		System.out.println("Prefetch done");
 		
@@ -127,16 +147,16 @@ public class FeatureBuilder {
 		
 		for (Day d : candidates.keySet()) {
 			List<String> syms = candidates.get(d);
-			
-			es.submit(new Lame(d, syms));
+			createInstances(d, syms);
+		//	es.submit(new Lame(d, syms));
 		}
 		
-		try {
-			es.awaitTermination(30, TimeUnit.SECONDS);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+//		try {
+//			es.awaitTermination(30, TimeUnit.SECONDS);
+//		} catch (InterruptedException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 		
 	}
 	
@@ -171,6 +191,7 @@ public class FeatureBuilder {
 			try{
 			instance.setValue(gap, getGap(symbol,d));
 			instance.setValue(prevRet, getPrevReturn(symbol, d));
+			instance.setValue(yestLow, getPrevLow(symbol, d));
 			instance.setValue(index, getIndexGap(d));
 			instance.setValue(mktCap, dataSource.getMarketCap(symbol));
 			instance.setValue(target, getReturn(symbol,d,60));
@@ -204,8 +225,6 @@ public class FeatureBuilder {
 		if(last == null)
 			throw new Exception("no intraday data for " + end);
 		
-			
-		
 		double open  = first.open();
 		double close = last.close();		
 		
@@ -228,10 +247,10 @@ public class FeatureBuilder {
 						
 			int gapCount = 0;
 			//rely on fact TreeMap keys are ascending
-			System.out.println(date);
+			//System.out.println(date);
 			for (String symbol: map.values()) {							
 				list.add(symbol);
-				System.out.println(symbol + " " + getGap(symbol,date));
+				//System.out.println(symbol + " " + getGap(symbol,date));
 				
 				gapCount++;
 				if (gapCount == perDay)

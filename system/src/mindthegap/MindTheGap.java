@@ -62,11 +62,11 @@ public class MindTheGap {
 				"/home/david/trading/mindthegap/mindthegap.db");
 		
 		int test   =  1;
-		int train  = 30;
+		int train  = 10;
 		int maxTest = 50;
 		int stride =  1;
 		FeatureBuilder fb = new FeatureBuilder(dataSource);
-		fb.createFeatures(20);
+		fb.createFeatures(30);
 		SetBuilder setBuilder = new SetBuilder(fb.getInstances(), fb.getMetaData(),maxTest, test, train, stride);
 		
 		Trader trader = new Trader(dataSource);
@@ -117,7 +117,7 @@ public class MindTheGap {
 				ret * 100 / tradeCount);
 		System.out.println(sb);
 		
-		System.out.println(fb.report());
+		//System.out.println(fb.report());
 		
 		at.disconnect();
 

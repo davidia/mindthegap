@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 import mindthegap.data.Bar;
@@ -58,7 +59,7 @@ public class Requestor extends at.feedapi.ActiveTickServerRequester
 		barHistoryEventListeners.add(bhel);		
 	}
 
-	private Map<Long,Request> request = new HashMap<>();
+	private Map<Long,Request> request = new ConcurrentHashMap<>();
 	private class Request{
 		private final String symbol;
 		private final Day day;

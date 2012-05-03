@@ -79,7 +79,7 @@ public class Trader {
 					trade.close(new DayTime(day,ohlc.getTime()), trade.getOpen() * (1 + profit));
 					break;
 				}
-				if (ohlc.getTime().after(new Time(9,58))) {
+				if (ohlc.getTime().after(new Time(10,28))) {
 					trade.close(new DayTime(day,ohlc.getTime()), ohlc.close());
 					break;
 				}
