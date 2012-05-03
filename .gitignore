@@ -1,6 +1,12 @@
+libsvm*
+pages
+div
 data
 daily
 activefeed
 opens
 sp500
 sp-daily
+scratch
+weka*
+mindthegap.db

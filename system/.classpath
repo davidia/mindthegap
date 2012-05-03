@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="libs/weka.jar" sourcepath="/home/david/trading/mindthegap/weka-3-7-5/weka-src.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/home/david/trading/mindthegap/weka-3-7-5/doc/weka/classifiers/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="libs/api_sdk/atapi.jar"/>
+	<classpathentry kind="lib" path="libs/api_sdk/gnu-crypto.jar"/>
+	<classpathentry kind="lib" path="libs/api_sdk/javax-crypto.jar"/>
+	<classpathentry kind="lib" path="libs/api_sdk/javax-security.jar"/>
+	<classpathentry kind="lib" path="libs/sqlitejdbc-v056.jar"/>
+	<classpathentry kind="lib" path="libs/snakeyaml-1.10.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="libs/sqlite4java-docs.zip"/>
+	<classpathentry kind="lib" path="libs/sqlite4java-src.zip"/>
+	<classpathentry kind="lib" path="libs/sqlite4java.jar" sourcepath="libs/sqlite4java-src.zip"/>
+	<classpathentry kind="lib" path="libs/mongo-2.7.3.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

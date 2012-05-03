@@ -1,0 +1,3 @@
+
+
+awk '{cmd=sprintf("wget -O pages/%s http://finance.yahoo.com/q?s=%s",$1,$1);print cmd;system(cmd) }' sp500sym.txt
