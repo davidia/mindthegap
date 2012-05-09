@@ -6,7 +6,7 @@ import java.util.List;
 
 import mindthegap.data.Bar;
 import mindthegap.data.Intraday;
-import mindthegap.data.OHLC;
+
 import mindthegap.util.DayTime;
 
 import org.junit.Before;

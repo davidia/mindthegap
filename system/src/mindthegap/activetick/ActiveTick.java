@@ -164,4 +164,11 @@ public class ActiveTick {
 		m_ATServerAPI.ATShutdownAPI();
 		
 	}
+
+
+
+	public int getOutstandingRequests() {
+		// TODO Auto-generated method stub
+		return r.getOutstandingRequests();
+	}
 }

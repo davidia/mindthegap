@@ -57,6 +57,10 @@ public class Time {
 	public boolean after(Time time) {
 		return minutes > time.minutes;
 	}
+	
+	public boolean before(Time time) {
+		return minutes < time.minutes;
+	}
 
 	private String stringRep = null;
 	
@@ -74,5 +78,7 @@ public class Time {
 		// TODO Auto-generated method stub
 		return minutes;
 	}
+
+
 
 }

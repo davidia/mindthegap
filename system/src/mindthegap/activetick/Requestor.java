@@ -287,8 +287,6 @@ public class Requestor extends at.feedapi.ActiveTickServerRequester
 		}		
 	}
 	
-	Map<Long,String> req = new HashMap<>();
-	
 	protected void OnBarHistoryDbResponse(long origRequest, ATServerAPIDefines.ATBarHistoryResponseType responseType, Vector<ATServerAPIDefines.ATBARHISTORY_RECORD> vecData)
 	{
 		String strResponseType = "";
@@ -302,17 +300,18 @@ public class Requestor extends at.feedapi.ActiveTickServerRequester
 		}
 		
 		System.out.println(strResponseType);
-		
+		Request req = request.get(origRequest);
+		request.remove(origRequest);
 		List<Bar> data = new ArrayList<>(vecData.size());
 		for(ATServerAPIDefines.ATBARHISTORY_RECORD record : vecData){
 			
 			mindthegap.util.Time time = new mindthegap.util.Time((int)record.barTime.hour,(int) record.barTime.minute);
-			Bar bar = new Bar(time, record.open.price,
+			Bar bar = new Bar(new DayTime(req.getDay(),time), record.open.price,
 					record.high.price, record.low.price, record.close.price);		
 			data.add(bar);
 		}
 		
-		Request req = request.get(origRequest);
+		
 		Intraday intraday = new Intraday(req.getSymbol(), req.getDay(), data);
 		
 
@@ -496,6 +495,14 @@ public class Requestor extends at.feedapi.ActiveTickServerRequester
 			default: break;
 		}
 		System.out.println("RECV (" + origRequest +"): Market Movers response [ " + strResponseType + "]\n--------------------------------------------------------------");
+	}
+
+
+
+
+	public int getOutstandingRequests() {
+		
+		return request.size();
 	}
 
 

@@ -82,7 +82,14 @@ public class Trade {
 		sb.append(" ");
 		sb.append(close);	
 		formatter.format(" (%.2f%%)", 100 * getPnl() / getOpen());
+		sb.append(meta);
 		return sb.toString();
+	}
+
+	String meta;
+	public void setMeta(String msg) {
+		meta = msg;
+		
 	}
 	
 	

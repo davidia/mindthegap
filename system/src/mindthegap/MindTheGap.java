@@ -56,17 +56,26 @@ public class MindTheGap {
 
 		ActiveTick at = new ActiveTick();
 		at.connect();
+		
+//		try {
+//		//	Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
 	
 		DataSource dataSource = new DataSource(at,
-				"/home/david/trading/mindthegap/sp500",
-				"/home/david/trading/mindthegap/mindthegap.db");
+				"/home/david/trading/mindthegap/sp500"
+				);
 		
 		int test   =  1;
-		int train  = 10;
+		int train  = 13;
 		int maxTest = 50;
 		int stride =  1;
 		FeatureBuilder fb = new FeatureBuilder(dataSource);
-		fb.createFeatures(30);
+		fb.createFeatures(25);
+		fb.dump("../features.arff");
 		SetBuilder setBuilder = new SetBuilder(fb.getInstances(), fb.getMetaData(),maxTest, test, train, stride);
 		
 		Trader trader = new Trader(dataSource);
@@ -78,22 +87,13 @@ public class MindTheGap {
 			
 			model.train(setBuilder.getTrainSet(i));
 			Instances testSet = setBuilder.getTestSet(i);
-			List<Double> classes = model.classify(testSet);
-			
+			List<Double> classes = model.classify(testSet);			
 			List<MetaData> metaData = setBuilder.getTestMetaData(i);
-			
-			
-//			System.out.println(classes);
-//			for(int j=0; j<classes.size();j++){
-//				MetaData md = metaData.get(j);				
-//				formatter.format("%s %s %1.3f => %1.3f\n",md.getSymbol(),md.getDate(),classes.get(j),testSet.get(j).value(2));
-//			}
-			
 			trades.addAll(trader.simulate(metaData, classes));
 			
 		}
-//		System.out.println(sb);
-//
+		System.out.println(sb);
+
 				int wins = 0, losses = 0;
 
 		double ret = 0;

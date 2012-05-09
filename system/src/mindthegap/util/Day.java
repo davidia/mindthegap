@@ -19,6 +19,18 @@ public class Day implements Comparable<Day>{
 		this.month = month;
 		this.year = year;
 	}
+	
+	public Day(int packedDate){
+		year  = (int) (packedDate >> 9 & (0x07 << 8 | 0xFF )) ;
+		month = (int) (packedDate >> 5 & 0x0F) ;
+		day   = (int) (packedDate      & 0x1f) ;
+		
+	}
+	
+	public int getPacked(){
+		return (year << 9) | (month << 5) | day;
+		//return day;
+	}
 
 	public int getDay() {
 		return day;

@@ -7,6 +7,17 @@ public class DayTime {
 	private final Day day;
 	private final Time time;
 	
+	
+	public int pack(){
+		int d = day.getPacked();
+		return d << 11 | time.asMinutes();
+	}
+	
+	public static DayTime unpack(int packed){
+		int minutes = packed & (0x07 << 8 | 0xff);
+		return new DayTime(new Day(packed >> 11),new Time(minutes));
+	}
+	
 	@SuppressWarnings("deprecation")
 	public DayTime(Date date){
 		day = new Day(date.getYear() + 1900,date.getMonth()+1,date.getDate());

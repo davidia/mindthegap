@@ -20,18 +20,16 @@ public class Model {
 	
 	 
 	
-	private final String[] features = {"sym","date"  ,"gap" ,"indexGap" ,"R1"  , "MktCap" , "GapIndex" ,"target"};
+	
 	Bagging bagging;
 	
 	public Model(){	
 		bagging = new Bagging();			
-		//bagging.setNumExecutionSlots(6);
+		bagging.setNumExecutionSlots(12);
+		//bagging.setBagSizePercent(90);
 					
 	}
 
-	public String[] getFeatures() {
-		return features;		
-	}
 
 	public void train(Instances trainData) {
 		try {

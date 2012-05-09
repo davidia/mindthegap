@@ -6,7 +6,6 @@ import java.util.List;
 import mindthegap.data.Bar;
 import mindthegap.data.DataSource;
 import mindthegap.data.Intraday;
-import mindthegap.data.OHLC;
 import mindthegap.model.MetaData;
 import mindthegap.util.Day;
 import mindthegap.util.DayTime;
@@ -21,7 +20,7 @@ public class Trader {
 	DataSource dataSource;
 
 	double stop = 0.015;
-	double profit = 0.015;
+	double profit = 0.022;
 
 	public Trader(DataSource dataSource) {
 		this.dataSource = dataSource;
@@ -43,7 +42,8 @@ public class Trader {
 				tradei = j;
 			}
 		}
-		if(classes.size() > 0){
+		if(classes.size() > 0 && max > 0.018){
+			profit = stop = max;
 	//	for(int tradei=0;tradei<testData.size();tradei++){
 		//	if(classes.get(tradei) > 0.007){
 			MetaData md = testData.get(tradei);
@@ -52,6 +52,7 @@ public class Trader {
 			//(symbol, md.getDate(), new Time(9,30), new Time(10,00));
 			if(intradayData.size() > 0 && intradayData.get(new Time(9,30)) != null){
 				Trade trade = buy(symbol,md.getDate(), intradayData);
+				trade.setMeta(new Double(max).toString());
 				trades.add(trade);			
 			}
 		}
@@ -79,7 +80,7 @@ public class Trader {
 					trade.close(new DayTime(day,ohlc.getTime()), trade.getOpen() * (1 + profit));
 					break;
 				}
-				if (ohlc.getTime().after(new Time(10,28))) {
+				if (ohlc.getTime().after(new Time(10,10))) {
 					trade.close(new DayTime(day,ohlc.getTime()), ohlc.close());
 					break;
 				}
